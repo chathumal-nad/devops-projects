@@ -15,32 +15,32 @@ kubectl get secret -n argocd argocd-initial-admin-secret -o=jsonpath='{.data.pas
 
 admin bqqf2MSovLEJsN-7
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 
-![alt text](image-19.png)
+![alt text](images/image-19.png)
 
-![alt text](image-7.png)
+![alt text](images/image-7.png)
 
-![alt text](image-8.png)
+![alt text](images/image-8.png)
 
 
 we need a https endpoint so we will go with clusterip and ingress
 
-![alt text](image-9.png)
+![alt text](images/image-9.png)
 
-![alt text](image-10.png)
+![alt text](images/image-10.png)
 
-![alt text](image-11.png)
+![alt text](images/image-11.png)
 
-![alt text](image-12.png)
+![alt text](images/image-12.png)
 
 
 kubectl create secret generic -n grafana grafana-credentials \
@@ -48,22 +48,22 @@ kubectl create secret generic -n grafana grafana-credentials \
   --from-literal=GF_AUTH_AZUREAD_CLIENT_SECRET=<azuread_client_secret_value>
 
 
-![alt text](image-13.png)
+![alt text](images/image-13.png)
 
-![alt text](image-14.png)
+![alt text](images/image-14.png)
 
-![alt text](image-15.png)
+![alt text](images/image-15.png)
 
-![alt text](image-16.png)
+![alt text](images/image-16.png)
 
 In this way, all the users are accessed for the role 'Viewer' by default.
 
 
 
-![alt text](image-17.png)
+![alt text](images/image-17.png)
 
 Include the terraform link also
 
 
-![alt text](image-18.png)
+![alt text](images/image-18.png)
 
