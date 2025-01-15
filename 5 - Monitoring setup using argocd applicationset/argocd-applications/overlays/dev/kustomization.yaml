@@ -1,0 +1,7 @@
+bases:
+  - ../../base
+
+namePrefix: dev-   #all the object names will contain this  prefix
+
+commonLabels:
+  env: dev

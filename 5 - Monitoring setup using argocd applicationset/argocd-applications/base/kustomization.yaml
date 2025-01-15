@@ -1,0 +1,9 @@
+resources:
+  - grafana.yaml
+  - kube-prometheus.yaml
+
+commonLabels:
+  owner: nadeesha   #this lable will be added to all the objects
+  
+
+namespace: argocd

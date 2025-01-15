@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kube-prometheus
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: in-cluster
+        url: https://kubernetes.default.svc
+
+
+  template:
+    metadata:
+      name: '{{cluster}}-kube-prometheus'
+
+
+    spec:
+      source:
+        repoURL: https://prometheus-community.github.io/helm-charts
+        targetRevision: '*'
+        chart: kube-prometheus-stack
+
+        helm:
+          releaseName: 'stable'
+          version: v3
+          values: |
+            grafana:
+              enabled: false          
+
+
+      destination:
+        server: '{{url}}'
+        namespace: kube-prometheus
+
+      # The project the application belongs to.
+      project: default
+
+      # Sync policy
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+        - Validate=true
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+        - ServerSideApply=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m

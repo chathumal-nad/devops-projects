@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: grafana
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: in-cluster
+        url: https://kubernetes.default.svc
+
+
+  template:
+    metadata:
+      name: '{{cluster}}-grafana'
+
+
+    spec:
+      source:
+        repoURL: https://charts.bitnami.com/bitnami
+        targetRevision: '*'
+        chart: grafana-operator
+
+        helm:
+          releaseName: 'stable'
+          version: v3
+          values: |
+            grafana:
+              envFrom:
+                - secretRef:
+                    name: grafana-credentials
+              config:
+                server:
+                  root_url: https://monitoring.nadeeshachathumal.online
+                auth.azuread:
+                  enabled: "true"
+                  allow_sign_up: "true"
+                  client_id: GF_AUTH_AZUREAD_CLIENT_ID
+                  client_secret: GF_AUTH_AZUREAD_CLIENT_SECRET
+                  scopes: openid email profile
+                  auth_url: https://login.microsoftonline.com/0ac0523f-15a2-4a2a-9bb7-bdf6cf8f98af/oauth2/v2.0/authorize
+                  token_url: https://login.microsoftonline.com/0ac0523f-15a2-4a2a-9bb7-bdf6cf8f98af/oauth2/v2.0/token
+
+      destination:
+        server: '{{url}}'
+        namespace: grafana
+
+      # The project the application belongs to.
+      project: default
+
+      # Sync policy
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+        - Validate=true
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m
