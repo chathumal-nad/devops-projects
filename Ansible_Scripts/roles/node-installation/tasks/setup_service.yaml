@@ -1,0 +1,40 @@
+---
+# tasks/setup_service.yaml
+
+- name: Create systemd service file for frontend-app
+  template:
+    src: frontend-app.service.j2
+    dest: /etc/systemd/system/frontend-app.service
+  notify:
+    - Reload systemd
+
+- name: Copy server_restart.sh to the home directory
+  template:
+    src: server_restart.sh.j2
+    dest: /home/{{ user }}/server_restart.sh
+    mode: '0744'
+  become: true
+  when: not yarn_build_on_server
+  become_user: "{{ user }}"
+
+- name: Copy server_restart.sh to the home directory when yarn presents
+  template:
+    src: server_restart_yarn_build_on_server.sh.j2
+    dest: /home/{{ user }}/server_restart.sh
+    mode: '0744'
+  become: true
+  when: yarn_build_on_server
+  become_user: "{{ user }}"
+
+- name: Stop and enable frontend-app service
+  systemd:
+    name: frontend-app
+    enabled: true
+    state: stopped
+  # become: true
+
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: restarted
+  # become: true

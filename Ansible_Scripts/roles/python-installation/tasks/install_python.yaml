@@ -1,0 +1,36 @@
+---
+# tasks/install_python.yaml
+
+- name: Update apt repository cache
+  apt:
+    update_cache: true
+
+- name: Install prerequisites
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: Add deadsnakes PPA
+  apt_repository:
+    repo: ppa:deadsnakes/ppa
+    state: present
+
+- name: Install Python {{ python_version }} and related packages
+  apt:
+    name: 
+      - python{{ python_version }}
+      - python{{ python_version }}-venv
+      # - python{{ python_version }}-distutils
+      - python3-pip
+    state: present
+
+- name: Verify Python installation
+  command: python{{ python_version }} --version
+  become: true
+  become_user: "{{ user }}"
+
+- name: Verify pip installation
+  command: python{{ python_version }} -m pip --version
+  become: true
+  become_user: "{{ user }}"
+

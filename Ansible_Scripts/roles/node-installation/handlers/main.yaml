@@ -1,0 +1,16 @@
+---
+# handlers/main.yaml
+
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: restarted
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
+
+- name: Restart frontend-app service
+  systemd:
+    name: frontend-app
+    state: restarted

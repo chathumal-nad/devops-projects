@@ -1,0 +1,7 @@
+---
+server_name: "xx.xx.xx.com"
+app_directory: "/var/www/html/fe"
+user: "ubuntu"
+install_node_npm: true
+yarn_build_on_server: false
+lets_encrypt: true

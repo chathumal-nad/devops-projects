@@ -1,0 +1,10 @@
+---
+tomcat_version: "9.0.97" #10.1.30
+tomcat_main_version: "9" #10
+tomcat_install_dir: "/opt/apps"
+user: "ubuntu"
+war_name: "xxxxx.war"
+server_name: "xx.xxx.xxx.com"
+lets_encrypt: true
+java_version: 11
+install_nginx: true

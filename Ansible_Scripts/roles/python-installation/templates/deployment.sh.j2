@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+echo "Deploying package"
+sudo systemctl stop python-api
+sudo rm -rfv ~/zip-folder/{*,.*}
+sudo rm -rf /opt/app/{{ app_folder_name }}/{*,.*}
+mv ~/build.zip ~/zip-folder/build.zip
+unzip -o ~/zip-folder/build.zip -d /opt/app/{{ app_folder_name }}/
+cd /opt/app/{{ app_folder_name }}
+/usr/bin/python{{ python_version }} -m pip install -r requirements.txt --break-system-packages
+sudo systemctl restart python-api
+echo "Successfully deployed"

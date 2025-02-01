@@ -1,0 +1,16 @@
+[Unit]
+Description=tomcat
+After=network.target
+
+[Service]
+Type=forking
+User={{ user }}
+WorkingDirectory={{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/
+# LimitNOFILE=4096
+ExecStart=/bin/bash bin/startup.sh
+ExecStop=/bin/bash bin/shutdown.sh
+Restart=on-failure
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target

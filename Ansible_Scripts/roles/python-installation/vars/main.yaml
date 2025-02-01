@@ -1,0 +1,8 @@
+---
+python_version: "3.12"
+app_folder_name: "python-app"
+server_name: "xx.xx.xx.com"
+user: "ubuntu"
+lets_encrypt: true
+python_command: "-m uvicorn main:app --workers 1"
+install_nginx: true

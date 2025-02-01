@@ -1,0 +1,139 @@
+- name: Setup EC2 instance with EFS and LibreOffice
+  hosts: dev-servers
+  become: true
+  vars:
+    base_path: /home/ubuntu/efs-data
+    efs_system_id: fs-xxxxxxxxxxx
+
+  tasks:
+
+    # Install dependencies for EFS utils
+    - name: Update apt cache
+      apt:
+        update_cache: 'yes'
+
+    - name: Install required packages for EFS utils
+      apt:
+        name:
+          # Development tools
+          - git
+          - binutils
+          - rustc
+          - cargo
+          - pkg-config
+
+          # Libraries and utilities
+          - libssl-dev
+          - gettext
+          - wget
+        state: present
+
+    - name: Download pip installer script
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
+
+    - name: Install pip for Python 3
+      command: python3 /tmp/get-pip.py --break-system-packages
+      args:
+        creates: /usr/local/bin/pip3
+      environment:
+        PYTHONWARNINGS: ignore
+      register: pip_installed
+
+    - name: Install botocore with pip
+      pip:
+        name: botocore
+        state: present
+        extra_args: '--target /usr/lib/python3/dist-packages'
+
+    # Build and install EFS utils
+    - name: Clone EFS utils repository
+      git:
+        repo: https://github.com/aws/efs-utils
+        dest: /tmp/efs-utils
+      register: efs_cloned
+
+    - name: Build and install EFS utils
+      shell: |
+        cd /tmp/efs-utils
+        ./build-deb.sh
+        apt-get -y install ./build/amazon-efs-utils*deb
+      when: efs_cloned is changed
+
+    # Mount EFS
+    - name: Mount EFS file system
+      mount:
+        path: '{{ base_path }}'
+        src: '{{ efs_system_id }}:/'
+        fstype: efs
+        opts: _netdev,noresvport,tls,nofail
+        state: mounted
+      register: efs_mounted
+
+    - ansible.builtin.debug:
+        var: efs_mounted
+
+    # Create directories and files
+    - name: Create required directories and files
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: '0755'
+        owner: ubuntu
+        group: ubuntu
+      with_items:
+        - '{{ base_path }}'
+        - '{{ base_path }}/assets'
+        - '{{ base_path }}/tmp'
+      when: efs_mounted is succeeded
+
+    - name: Create image file
+      file:
+        path: '{{ base_path }}/images.jpg'
+        state: touch
+        owner: ubuntu
+        group: ubuntu        
+      when: efs_mounted is succeeded
+
+    # Install LibreOffice
+    - name: Install LibreOffice
+      apt:
+        name: libreoffice
+        state: present
+
+    # Configure LibreOffice as a systemd service
+    - name: Create LibreOffice systemd service file
+      copy:
+        dest: /etc/systemd/system/libreoffice.service
+        content: |
+          [Unit]
+          Description=LibreOffice in Headless Mode
+          After=network.target
+          [Service]
+          ExecStart=/usr/lib/libreoffice/program/soffice --headless --accept="socket,host=127.0.0.1,port=8100;urp;" --nofirststartwizard
+          Restart=always
+          User=ubuntu
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd daemon
+      command: systemctl daemon-reload
+
+    - name: Enable and stop LibreOffice service
+      systemd:
+        name: libreoffice
+        enabled: 'yes'
+        state: stopped
+
+    - name: Add LibreOffice stop command
+      lineinfile:
+        path: /home/ubuntu/server_restart.sh
+        insertbefore: 'sudo systemctl stop tomcat'
+        line: 'sudo systemctl stop libreoffice'
+
+    - name: Add LibreOffice start command
+      lineinfile:
+        path: /home/ubuntu/server_restart.sh
+        insertbefore: 'sudo systemctl start tomcat'
+        line: 'sudo systemctl start libreoffice'        

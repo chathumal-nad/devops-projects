@@ -1,0 +1,27 @@
+---
+# tasks/setup_environment.yaml
+
+- name: Create application folder
+  file:
+    path: "/opt/app/{{ app_folder_name }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+
+- name: Create zip-folder
+  file:
+    path: "/home/{{ user }}/zip-folder"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+
+
+- name: Copy deployment script
+  template:
+    src: deployment.sh.j2
+    dest: "/home/{{ user }}/deployment.sh"
+    mode: '0744'
+  become: true
+  become_user: "{{ user }}"    

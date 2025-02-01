@@ -1,0 +1,9 @@
+---
+
+- name: Copy server_restart.sh to the home directory
+  template:
+    src: server_restart.sh.j2
+    dest: /home/{{ user }}/server_restart.sh
+    mode: '0744'
+  become: true
+  become_user: "{{ user }}"

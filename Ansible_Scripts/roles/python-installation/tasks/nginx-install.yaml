@@ -1,0 +1,25 @@
+---
+- name: Update apt repository cache
+  apt:
+    update_cache: true
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  # become: true
+
+
+- name: Check if Nginx configuration file exists
+  stat:
+    path: "/etc/nginx/conf.d/{{ server_name }}.conf"
+  register: nginx_conf
+
+
+- name: Create Nginx configuration
+  template:
+    src: nginx_conf.j2
+    dest: "/etc/nginx/conf.d/{{ server_name }}.conf"
+  when: not nginx_conf.stat.exists    
+  notify:
+    - Restart Nginx

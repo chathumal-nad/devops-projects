@@ -1,0 +1,7 @@
+- include_tasks: java-tomcat-install.yaml
+- include_tasks: nginx-install.yaml
+  when: install_nginx
+- include_tasks: setup_scripts.yaml
+- include_tasks: install_tools.yaml
+- include_tasks: lets_encrypt.yaml
+  when: lets_encrypt

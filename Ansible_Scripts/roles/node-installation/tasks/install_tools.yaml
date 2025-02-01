@@ -1,0 +1,7 @@
+---
+- name: Install tools
+  apt:
+    name:
+      - unzip
+      - net-tools
+    state: present

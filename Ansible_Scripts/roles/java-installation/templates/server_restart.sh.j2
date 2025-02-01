@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+echo "Deploying package"
+cd {{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/
+sudo systemctl stop tomcat
+rm -rf webapps/*
+mv /home/{{ user }}/{{ war_name }} {{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/
+sudo systemctl start tomcat
+echo "Successfully deployed"

@@ -1,0 +1,16 @@
+[Unit]
+Description=python-API
+After=network.target
+
+[Service]
+User={{ user }}
+WorkingDirectory=/opt/app/{{ app_folder_name }}
+LimitNOFILE=4096
+ExecStart=/usr/bin/python{{ python_version }} {{ python_command }}
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/home/{{ user }}/python-api.log
+StandardError=append:/home/{{ user }}/python-api.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+---
+# tasks/configure_service.yaml
+
+- name: Create systemd service file
+  template:
+    src: python-api.service.j2
+    dest: /etc/systemd/system/python-api.service
+  # notify:
+  #   - Restart python-api service
+
+- name: Enable and stop python-api service
+  systemd:
+    name: python-api
+    enabled: true
+    state: stopped

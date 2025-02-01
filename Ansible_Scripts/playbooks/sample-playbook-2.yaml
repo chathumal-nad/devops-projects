@@ -1,0 +1,32 @@
+---
+- hosts: prod-servers
+  become: true
+  roles:
+    - role: python-installation
+      vars:
+        python_version: "3.12"
+        app_folder_name: "python-app"
+        server_name: "xx.xx.xx.xx"
+        user: "ubuntu"
+        lets_encrypt: false
+        python_command: "-m gunicorn app.main:app --bind 0.0.0.0:8000 --worker-class uvicorn.workers.UvicornWorker"
+
+    - role: geerlingguy.node_exporter
+
+    - role: patrickjahns.promtail
+      vars:
+        promtail_user_additional_groups: ubuntu
+        promtail_config_server:
+          http_listen_port: 9080
+          grpc_listen_port: 0
+        promtail_config_clients:
+          - url: "http://grafana.xxx.xxx.xxx:3100/loki/api/v1/push"
+        promtail_positions_directory: /etc/promtail
+        promtail_config_scrape_configs:
+          - job_name: prod-python-app
+            static_configs:
+            - targets:
+                - localhost
+              labels:
+                job: prod-python-app
+                __path__: /home/ubuntu/python-api.log    

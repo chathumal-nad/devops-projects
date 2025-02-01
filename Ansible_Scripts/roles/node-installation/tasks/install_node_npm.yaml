@@ -1,0 +1,52 @@
+---
+# tasks/install_node_npm.yaml
+
+- name: Install Node.js and npm using NVM
+  shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm install 20
+    node -v
+    npm -v
+    npm install -g serve
+  become: true
+  become_user: "{{ user }}"
+  environment:
+    HOME: "/home/{{ user }}"
+    USER: "{{ user }}"
+  args:
+    executable: /bin/bash
+
+- name: Install yarn
+  shell: |
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npm install -g yarn
+  become: true
+  become_user: "{{ user }}"
+  when: yarn_build_on_server
+  environment:
+    HOME: "/home/{{ user }}"
+    USER: "{{ user }}"
+  args:
+    executable: /bin/bash
+
+
+- name: Get Node.js version
+  shell: |
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    node -v
+  become: true
+  become_user: "{{ user }}"
+  environment:
+    HOME: "/home/{{ user }}"
+    USER: "{{ user }}"
+  args:
+    executable: /bin/bash
+  register: node_version_output
+
+- name: Set Node.js version
+  set_fact:
+    node_version: "{{ node_version_output.stdout }}"

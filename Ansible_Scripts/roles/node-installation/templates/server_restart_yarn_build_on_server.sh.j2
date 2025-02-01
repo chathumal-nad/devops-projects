@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+echo "Deploying package"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+sudo systemctl stop frontend-app
+sudo rm -rf {{ app_directory }}/{*,.*}
+unzip build.zip -d {{ app_directory }}
+cd {{ app_directory }}
+yarn install
+sudo systemctl restart frontend-app
+rm -rf ~/build.zip
+echo "Successfully deployed"

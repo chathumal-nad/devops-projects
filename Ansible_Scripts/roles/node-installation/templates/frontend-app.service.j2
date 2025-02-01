@@ -1,0 +1,22 @@
+[Unit]
+Description=frontend-app
+After=network.target
+
+[Service]
+User={{ user }}
+WorkingDirectory={{ app_directory }}
+LimitNOFILE=4096
+# ExecStart=/home/{{ user }}/.nvm/versions/node/{{ node_version }}/bin/node /home/{{ user }}/.nvm/versions/node/{{ node_version }}/bin/serve -n {{ app_directory }}
+{% if yarn_build_on_server %}
+ExecStart=/bin/bash -c 'export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; yarn start'
+{% else %}
+ExecStart=/bin/bash -c 'export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; serve -n {{ app_directory }}'
+{% endif %}
+Restart=on-failure
+RestartSec=15s
+
+StandardOutput=append:/home/{{ user }}/frontend-app.log
+StandardError=append:/home/{{ user }}/frontend-app.log
+
+[Install]
+WantedBy=multi-user.target

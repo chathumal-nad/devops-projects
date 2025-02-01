@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+echo "Deploying package"
+sudo unzip build.zip
+sleep 5
+sudo rm -rfv {{ app_directory }}/{*,.*}
+sleep 5
+sudo chmod 755 -R out/
+sudo cp -r out/* {{ app_directory }}
+sleep 5
+cd {{ app_directory }}
+sudo find . -type d -exec chmod 755 {} \;
+sudo find . -type f -exec chmod 644 {} \;
+sudo systemctl restart frontend-app
+sleep 5
+cd /home/{{ user }}/
+sleep 5
+sudo rm -rf build.zip out
+echo "Successfully deployed"

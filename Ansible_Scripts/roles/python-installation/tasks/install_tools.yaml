@@ -1,0 +1,9 @@
+---
+# tasks/install_letsencrypt.yaml
+
+- name: Install tools
+  apt:
+    name: 
+      - unzip
+      - net-tools
+    state: present

@@ -1,0 +1,11 @@
+---
+# tasks/main.yaml
+
+- include_tasks: install_python.yaml
+- include_tasks: setup_environment.yaml
+- include_tasks: configure_service.yaml
+- include_tasks: nginx-install.yaml
+  when: install_nginx
+- include_tasks: install_tools.yaml
+- include_tasks: lets_encrypt.yaml
+  when: lets_encrypt

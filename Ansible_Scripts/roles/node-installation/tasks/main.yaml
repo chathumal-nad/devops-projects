@@ -1,0 +1,11 @@
+---
+# tasks/main.yaml
+
+- include_tasks: install_node_npm.yaml
+  when: install_node_npm
+- include_tasks: install_nginx.yaml
+- include_tasks: setup_service.yaml
+  when: install_node_npm
+- include_tasks: install_tools.yaml
+- include_tasks: lets_encrypt.yaml
+  when: lets_encrypt

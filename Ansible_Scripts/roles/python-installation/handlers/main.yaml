@@ -1,0 +1,10 @@
+---
+- name: Restart python-api service
+  systemd:
+    name: python-api
+    state: restarted
+
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: restarted

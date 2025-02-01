@@ -1,0 +1,9 @@
+- name: Install Let's Encrypt
+  apt:
+    name: 
+      - certbot
+      - python3-certbot-nginx
+    state: present
+
+- name: Generate SSL certificate with Certbot
+  command: certbot --nginx -d {{ server_name }} --non-interactive --agree-tos --email xx@xxx.com
