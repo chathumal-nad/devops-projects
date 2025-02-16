@@ -1,26 +1,48 @@
-# Monitor Azure Kubernetes Service(AKS) with Prometheus and Grafana
+# Monitor Azure Kubernetes Service (AKS) with Prometheus and Grafana
 
-This project aims to deploy a monitoring system for AKS and access Grafana dashboards using a custom domain. In this case, you need to own a domain, which you can purchase from various websites. I have created my domain using [GoDaddy](https://account.godaddy.com/) and will be used here.
+This project aims to deploy a monitoring system for AKS and access Grafana dashboards using a custom domain. In this case, you need to own a domain, which you can purchase from various websites. I created my domain using [GoDaddy](https://account.godaddy.com/), and it will be used here.
 
-- [Monitor Azure Kubernetes Service(AKS) with Prometheus and Grafana](#monitor-azure-kubernetes-serviceaks-with-prometheus-and-grafana)
+- [Monitor Azure Kubernetes Service (AKS) with Prometheus and Grafana](#monitor-azure-kubernetes-service-aks-with-prometheus-and-grafana)
+  - [Prerequisites](#prerequisites)
   - [Setting up AKS cluster](#setting-up-aks-cluster)
   - [Installing Helm packages](#installing-helm-packages)
   - [Create self signed certificate](#create-self-signed-certificate)
   - [Creating Ingress objects](#creating-ingress-objects)
   - [Adding DNS records](#adding-dns-records)
-  - [Log into Grafana](#log-into-grafana)
-  - [Create a Service Principal and Assign Role](#create-a-service-principal-and-assign-role)
+  - [Log in to Grafana](#log-in-to-grafana)
+  - [Create a Service Principal and Assign a Role](#create-a-service-principal-and-assign-a-role)
   - [Create Azure Monitor Data Source](#create-azure-monitor-data-source)
-  - [View the metrics in the dashboards](#view-the-metrics-in-the-dashboards)
-  - [Clean up the resources](#clean-up-the-resources)
+  - [View the metrics in the Dashboards](#view-the-metrics-in-the-dashboards)
+  - [Clean up the Resources](#clean-up-the-resources)
   - [References](#references)
+
+## Prerequisites
+
+
+1. **Azure Subscription:**
+   - Ensure you have an **active Azure account**.
+   - To create and manage resources, you must have **Owner** or **Contributor** roles in the Azure subscription. These roles grant full access to all resources, with the **Owner** role additionally allowing you to assign roles to others.
+   - To assign roles to others, the **User Access Administrator** role is necessary.
+   - To create application registrations (service principals), you need **Application Administrator** Azure AD Role.
+
+2. **Domain Ownership:**
+   - Acquire a custom domain (e.g., via [GoDaddy](https://account.godaddy.com/)).
+
+3. **Development Environment:**
+   - **Tools:**
+     - **Azure CLI:** [Install Guide](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+     - **Kubectl:** [Install Guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+     - **Helm:** [Install Guide](https://helm.sh/docs/intro/install/)
+
+
+
 
 
 ## Setting up AKS cluster
 
 > Please note that all the following commands are designed for the Bash shell.
 
-When creating the cluster need to enable `azure-keyvault-secrets-provider` and  `web_application_routing` add-ons to create ingress objects in the cluster. By enabling them, `nginx` ingress-controller will be deployed automatically.
+When creating the cluster, you need to enable `azure-keyvault-secrets-provider` and  `web_application_routing` add-ons to create ingress objects in the cluster. By enabling them, `nginx` ingress-controller will be deployed automatically.
 
 ```
 RESOURCE_GROUP="grafana"
@@ -69,7 +91,7 @@ kubectl get pods -A
 
 ## Installing Helm packages
 
-Deploy Grafana and Prometheus applications using the following commands.
+Deploy the Grafana and Prometheus applications using the following commands.
 
 This chart will install,
 
@@ -93,7 +115,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring
 
 ## Create self signed certificate
 
-Let's create a self signed certificate to use in our domain.
+Let's create a self signed certificate to use for our domain.
 
 To create a certificate you need a key vault. If you don't have a key-vault yet, create one by using the following command.
 
@@ -113,7 +135,7 @@ I'm using `monitoring.nadeeshachathumal.online` as the Grafana URL here.
 
 Navigate to AKS cluster :arrow_right: Go to Services and Ingresses
 
-Select the service (in this case `prometheus-grafana`) and select `Add ingress`. Note the `Nginx` service which is exposed as a LoadBalancer and its `ExternalIP`.
+Select the service (in this case `prometheus-grafana`) and choose `Add ingress`. Note the `Nginx` service which is exposed as a LoadBalancer and its `ExternalIP`.
 
 ![alt text](https://d2d9hyuv9q4e6i.cloudfront.net/Monitor_AKS_with_Prometheus_and_Grafana/image.png)
 
@@ -161,9 +183,9 @@ Now log into the DNS management section in your Domain provider. Add an `A recor
 In the value section you need to provide the IP address.
 
 
-## Log into Grafana
+## Log in to Grafana
 
-Now log into the Grafana using the URL (<https://monitoring.nadeeshachathumal.online>)
+Now log in to the Grafana using the URL (<https://monitoring.nadeeshachathumal.online>)
 
 Since we have generated a self-signed certificate for our domain, the following warning will be received.
 
@@ -188,7 +210,7 @@ kubectl get secret -n monitoring prometheus-grafana -o=jsonpath='{.data.admin-pa
 ```
 
 
-## Create a Service Principal and Assign Role
+## Create a Service Principal and Assign a Role
 
 We need to create a `Service Principal` with `Monitoring Reader` role to the scope of AKS resource group. When we create the Azure datasource, we need to mention this Service Principal credentials.
 
@@ -229,7 +251,7 @@ Select the `Dashboards` section as seen in the above image and import
 
 ![alt text](https://d2d9hyuv9q4e6i.cloudfront.net/Monitor_AKS_with_Prometheus_and_Grafana/image-11.png)
 
-## View the metrics in the dashboards
+## View the metrics in the Dashboards
 
 After adding the data source is successful, you can navigate to the dashboards section and you will find several dashboards including the imported one in the earlier step.
 
@@ -239,7 +261,7 @@ Select a dashboard to view metrics.
 
 ![alt text](https://d2d9hyuv9q4e6i.cloudfront.net/Monitor_AKS_with_Prometheus_and_Grafana/image-12.png)
 
-## Clean up the resources
+## Clean up the Resources
 
 ```
 az aks delete --name $CLUSTER_NAME  --resource-group $RESOURCE_GROUP --no-wait
