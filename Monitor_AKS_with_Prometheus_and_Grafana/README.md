@@ -238,7 +238,7 @@ After adding the data source is successful, you can navigate to the dashboards s
 Select a dashboard to view metrics.
 
 ![alt text](images/image-12.png)
-![alt-text](https://portfolio-images-nadeesha.s3.ap-south-1.amazonaws.com/OSI-Model-Layers-1.webp)
+
 ## Clean up the resources
 
 ```
