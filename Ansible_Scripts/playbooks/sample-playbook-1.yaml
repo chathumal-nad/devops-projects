@@ -1,4 +1,4 @@
-- name: Setup EC2 instance with EFS and LibreOffice
+- name: Setup EC2 instance with EFS
   hosts: dev-servers
   become: true
   vars:
@@ -94,46 +94,4 @@
         state: touch
         owner: ubuntu
         group: ubuntu        
-      when: efs_mounted is succeeded
-
-    # Install LibreOffice
-    - name: Install LibreOffice
-      apt:
-        name: libreoffice
-        state: present
-
-    # Configure LibreOffice as a systemd service
-    - name: Create LibreOffice systemd service file
-      copy:
-        dest: /etc/systemd/system/libreoffice.service
-        content: |
-          [Unit]
-          Description=LibreOffice in Headless Mode
-          After=network.target
-          [Service]
-          ExecStart=/usr/lib/libreoffice/program/soffice --headless --accept="socket,host=127.0.0.1,port=8100;urp;" --nofirststartwizard
-          Restart=always
-          User=ubuntu
-          [Install]
-          WantedBy=multi-user.target
-
-    - name: Reload systemd daemon
-      command: systemctl daemon-reload
-
-    - name: Enable and stop LibreOffice service
-      systemd:
-        name: libreoffice
-        enabled: 'yes'
-        state: stopped
-
-    - name: Add LibreOffice stop command
-      lineinfile:
-        path: /home/ubuntu/server_restart.sh
-        insertbefore: 'sudo systemctl stop tomcat'
-        line: 'sudo systemctl stop libreoffice'
-
-    - name: Add LibreOffice start command
-      lineinfile:
-        path: /home/ubuntu/server_restart.sh
-        insertbefore: 'sudo systemctl start tomcat'
-        line: 'sudo systemctl start libreoffice'        
+      when: efs_mounted is succeeded       

@@ -6,9 +6,7 @@
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install 20
-    node -v
-    npm -v
+    nvm install {{ node_version }}
     npm install -g serve
   become: true
   become_user: "{{ user }}"
@@ -47,6 +45,6 @@
     executable: /bin/bash
   register: node_version_output
 
-- name: Set Node.js version
+- name: Check Node.js version
   set_fact:
     node_version: "{{ node_version_output.stdout }}"
