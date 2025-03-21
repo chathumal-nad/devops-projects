@@ -1,6 +1,6 @@
-# Project 1 - Azure Dev Environment created from Terraform
+# Azure Dev Environment created from Terraform
 
-- [Project 1 - Azure Dev Environment created from Terraform](#project-1---azure-dev-environment-created-from-terraform)
+- [Azure Dev Environment created from Terraform](#azure-dev-environment-created-from-terraform)
   - [Components](#components)
   - [Setting up Terraform backend](#setting-up-terraform-backend)
   - [Reading azure resources using data blocks](#reading-azure-resources-using-data-blocks)

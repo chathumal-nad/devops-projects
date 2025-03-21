@@ -63,4 +63,4 @@ The **Python** role prepares a Python development environment with the following
   - **EFS Utils** tool
 - **Final Step**: The **EFS** will be automatically mounted to the **EC2 instance** by adding a record in the **fstab** file.
 
-[sample-playbook-2.yaml](playbooks/sample-playbook-2.yaml) is an example of how to use the `python-installation` role with optional Nginx installation. It additionally installs **node-exporter** and **Promtail**. **Promtail** is used to send Python logs to a **Grafana** server.
+[sample-playbook-2.yaml](playbooks/sample-playbook-2.yaml) is an example of how to use the `python-installation` role with optional Nginx installation. It additionally installs **node-exporter** and **Promtail**. **Promtail** is used to ship logs to **Grafana Loki**, which is Grafana's purpose-built log aggregation system.
