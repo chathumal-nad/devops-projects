@@ -28,13 +28,23 @@ This repository contains a collection of DevOps projects and infrastructure-as-c
 - Location: `Monitoring_setup_using_argocd_applicationset/`
 - Description: GitOps-based monitoring setup using ArgoCD ApplicationSet for Kubernetes.
 
+### 7. EC2 Instance Recovery with AWS Lambda
+- Location: `Instance_restart_lambda/`
+- Description: Cross-account AWS Lambda solution for automatically rebooting EC2 instances when they become unhealthy, with support for cross-region operations and email notifications.
+
+### 8. AWS Cost Notifier Lambda
+- Location: `Cost-notifier-lambda/`
+- Description: AWS Lambda function that sends daily cost reports via email using Amazon SES, scheduled using EventBridge Scheduler to run on weekdays at 8:30 AM.
+
 ## Prerequisites
 
 - Azure CLI
+- AWS CLI
 - Terraform
 - Ansible
 - Kubectl
 - Azure Subscription
+- AWS Account
 - Git
 
 ## Getting Started
@@ -51,8 +61,6 @@ cd <project-directory>
 ```
 
 3. Follow the README instructions within each project directory for specific setup and usage guidelines.
-
-
 
 ## Contact
 
