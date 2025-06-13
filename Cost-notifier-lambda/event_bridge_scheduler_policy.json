@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "lambda:InvokeFunction"
+            ],
+            "Resource": [
+                "arn:aws:lambda:ap-south-1:123456789123:function:cost-notifier:*",
+                "arn:aws:lambda:ap-south-1:123456789123:function:cost-notifier"
+            ]
+        }
+    ]
+}
