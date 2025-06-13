@@ -1,0 +1,43 @@
+{
+    "source": "aws.cloudwatch",
+    "alarmArn": "arn:aws:cloudwatch:ap-south-1:111111111111:alarm:jenkins-target-group-unhealthy-hosts",
+    "accountId": "111111111111",
+    "time": "2025-06-04T11:20:33.830+0000",
+    "region": "ap-south-1",
+    "alarmData": {
+        "alarmName": "jenkins-target-group-unhealthy-hosts",
+        "state": {
+            "value": "ALARM",
+            "reason": "Threshold Crossed: 1 datapoint [1.0 (04/06/25 11:17:00)] was greater than the threshold (0.0).",
+            "reasonData": "{\"version\":\"1.0\",\"queryDate\":\"2025-06-04T11:20:33.828+0000\",\"startDate\":\"2025-06-04T11:17:00.000+0000\",\"statistic\":\"Maximum\",\"period\":60,\"recentDatapoints\":[1.0],\"threshold\":0.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2025-06-04T11:17:00.000+0000\",\"sampleCount\":2.0,\"value\":1.0}]}",
+            "timestamp": "2025-06-04T11:20:33.830+0000"
+        },
+        "previousState": {
+            "value": "OK",
+            "reason": "Threshold Crossed: 1 datapoint [0.0 (04/06/25 11:11:00)] was not greater than the threshold (0.0).",
+            "reasonData": "{\"version\":\"1.0\",\"queryDate\":\"2025-06-04T11:14:33.831+0000\",\"startDate\":\"2025-06-04T11:11:00.000+0000\",\"statistic\":\"Maximum\",\"period\":60,\"recentDatapoints\":[0.0],\"threshold\":0.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2025-06-04T11:11:00.000+0000\",\"sampleCount\":2.0,\"value\":0.0}]}",
+            "timestamp": "2025-06-04T11:14:33.833+0000"
+        },
+        "configuration": {
+            "description": "This alarm triggers when there are unhealthy hosts in the target group",
+            "metrics": [
+                {
+                    "id": "e8cb9d45-5b70-f2bc-3c27-9f6e82f6cfe6",
+                    "metricStat": {
+                        "metric": {
+                            "namespace": "AWS/ApplicationELB",
+                            "name": "UnHealthyHostCount",
+                            "dimensions": {
+                                "TargetGroup": "targetgroup/jenkins/980dec79a9b68b69",
+                                "LoadBalancer": "app/3rivetech-web-demo/49422ee6a70d3db8"
+                            }
+                        },
+                        "period": 60,
+                        "stat": "Maximum"
+                    },
+                    "returnData": true
+                }
+            ]
+        }
+    }
+}

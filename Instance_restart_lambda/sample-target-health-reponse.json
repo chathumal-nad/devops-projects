@@ -1,0 +1,33 @@
+{
+    ResponseMetadata: {
+        HTTPHeaders: {
+            "content-length": "1021",
+            "content-type": "text/xml",
+            date: "Thu, 05 Jun 2025 05:01:03 GMT",
+            "x-amzn-requestid": "d2874c22-5b5c-4c20-b918-45668a801f5e"
+        },
+        HTTPStatusCode: 200,
+        RequestId: "d2874c22-5b5c-4c20-b918-45668a801f5e",
+        RetryAttempts: 0
+    },
+    TargetHealthDescriptions: [
+        {
+            AdministrativeOverride: {
+                Description: "No override is currently active on target",
+                Reason: "AdministrativeOverride.NoOverride",
+                State: "no_override"
+            },
+            HealthCheckPort: "80",
+            Target: {
+                AvailabilityZone: "all",
+                Id: "172.31.23.210",
+                Port: 80
+            },
+            TargetHealth: {
+                Description: "Health checks failed",
+                Reason: "Target.FailedHealthChecks",
+                State: "unhealthy"
+            }
+        }
+    ]
+}

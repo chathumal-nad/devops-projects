@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:eu-west-1:222222222222:sns-topic-for-lambda:76323a0c-7634-457a-9385-f552e97cf2e3",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "46416a29-c35e-5673-b5ba-0ae94cc0fa2a",
+                "TopicArn": "arn:aws:sns:eu-west-1:222222222222:sns-topic-for-lambda",
+                "Subject": "ALARM: \"content-hub-dev-be-target-group-unhealthy-hosts\" in EU (Ireland)",
+                "Message": "{\"AlarmName\":\"content-hub-dev-be-target-group-unhealthy-hosts\",\"AlarmDescription\":\"This alarm triggers when there are unhealthy hosts in the target group\",\"AWSAccountId\":\"222222222222\",\"AlarmConfigurationUpdatedTimestamp\":\"2025-06-09T07:24:29.233+0000\",\"NewStateValue\":\"ALARM\",\"NewStateReason\":\"Threshold Crossed: 1 datapoint [1.0 (09/06/25 07:26:00)] was greater than the threshold (0.0).\",\"StateChangeTime\":\"2025-06-09T07:29:34.576+0000\",\"Region\":\"EU (Ireland)\",\"AlarmArn\":\"arn:aws:cloudwatch:eu-west-1:222222222222:alarm:content-hub-dev-be-target-group-unhealthy-hosts\",\"OldStateValue\":\"OK\",\"OKActions\":[],\"AlarmActions\":[\"arn:aws:sns:eu-west-1:222222222222:sns-topic-for-lambda\"],\"InsufficientDataActions\":[],\"Trigger\":{\"MetricName\":\"UnHealthyHostCount\",\"Namespace\":\"AWS/ApplicationELB\",\"StatisticType\":\"Statistic\",\"Statistic\":\"MAXIMUM\",\"Unit\":null,\"Dimensions\":[{\"value\":\"targetgroup/content-hub-dev-be/b5a001e3f1cc178b\",\"name\":\"TargetGroup\"},{\"value\":\"app/content-hub-alb/3f30bca065cbc4e6\",\"name\":\"LoadBalancer\"}],\"Period\":60,\"EvaluationPeriods\":1,\"ComparisonOperator\":\"GreaterThanThreshold\",\"Threshold\":0.0,\"TreatMissingData\":\"notBreaching\",\"EvaluateLowSampleCountPercentile\":\"\"}}",
+                "Timestamp": "2025-06-09T07:29:34.619Z",
+                "SignatureVersion": "1",
+                "Signature": "MD7xWZQWAFKDX+lDJrKk4rM+sAI4ZC8eYHVucxTiqu2t6EkGGT+SQEnpdo0MTsq+s2P7HlDZef2V8A4+/inh2tiQEh8lfi+ojvQdjNMvraEEKdir9xlmxpP2ljy7eyY37ApTtvU/lQ0O5UyysVi1Q00BGV8bWBPdEAuEZtFesGR/QWWjT79s3+j1c3FuntUPC25hyl9spD4+eHZ5K6kNzIEgE4hNMoQKKrBNILHGNQJWLXUmcvSr16kYVtGYrFReVgeVapx7BeEnCPR2Zk2EGLLHi3TO6aIufRF0juM5D1c0/iye1DU395ChPwCVDwJElBqz7DfZ97XAoqD91w3b2A==",
+                "SigningCertUrl": "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-9c6465fa7f48f5cacd23014631ec1136.pem",
+                "UnsubscribeUrl": "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:222222222222:sns-topic-for-lambda:76323a0c-7634-457a-9385-f552e97cf2e3",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}
