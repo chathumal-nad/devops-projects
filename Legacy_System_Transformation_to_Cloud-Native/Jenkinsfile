@@ -1,0 +1,60 @@
+pipeline {
+  agent any
+
+  environment {
+    WAR_FILE = "my-project-saas.war"
+    BRANCH = "development"
+    BITBUCKET_WORKSPACE = "private-projects"
+    BITBUCKET_REPO = "my-project.git"
+  }
+
+  stages {
+    stage('Bitbucket') {
+      steps {
+        git branch: "${BRANCH}",
+          credentialsId: 'creds',
+          url: "https://dev-user@bitbucket.org/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO}"
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'mvn clean install -DskipTests'
+      }
+    }
+
+    stage("Deploy") {
+      steps {
+        echo "------> Starting the deployment <------"
+        
+        sh '''
+        CI_ROLE=$(aws sts assume-role \
+            --role-session-name=my-project-$(date +%s%N) \
+            --role-arn="arn:aws:iam::123456789:role/projectExecutionRole" \
+            --output text \
+            --query='Credentials.[
+              join(`=`, [`AWS_ACCESS_KEY_ID`, AccessKeyId]),
+              join(`=`, [`AWS_SECRET_ACCESS_KEY`, SecretAccessKey]),
+              join(`=`, [`AWS_SESSION_TOKEN`, SessionToken])
+              ]') && export ${CI_ROLE}
+      
+        aws s3 cp /opt/apps/java/${WAR_FILE} s3://my-project-artifacts/my-project/dev/${WAR_FILE}
+        
+        aws autoscaling start-instance-refresh --auto-scaling-group-name my-project-dev-be --region ap-south-1
+        
+        unset AWS_ACCESS_KEY_ID
+        unset AWS_SECRET_ACCESS_KEY
+        unset AWS_SESSION_TOKEN
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      echo "------> Cleaning Workspace <------"
+      cleanWs()
+    }
+  }
+
+}

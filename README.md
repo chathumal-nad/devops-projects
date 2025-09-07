@@ -36,6 +36,10 @@ This repository contains a collection of DevOps projects and infrastructure-as-c
 - Location: `Cost-notifier-lambda/`
 - Description: AWS Lambda function that sends daily cost reports via email using Amazon SES, scheduled using EventBridge Scheduler to run on weekdays at 8:30 AM.
 
+### 9. Legacy System Transformation to Cloud-Native
+- Location: `Legacy_System_Transformation_to_Cloud-Native/`
+- Description: Complete migration of a legacy PHP content management system to a modern cloud-native architecture with Java/Next.js stack, featuring auto-scaling, EFS storage, WAF security, and comprehensive monitoring using AWS services.
+
 ## Prerequisites
 
 - Azure CLI
