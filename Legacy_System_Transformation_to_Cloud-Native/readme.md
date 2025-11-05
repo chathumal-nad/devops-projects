@@ -13,10 +13,16 @@ This project involved migrating a legacy content management system to a modern, 
 - Java backend with Next.js frontend  
 - MySQL database
 
+## Architecture Diagram
+
+![Legacy CMS Migration to Cloud-Native Architecture](cms_migration_architecture_v3.png)
+
 ## Performance and Security Improvements
 
-- **Elastic File System (EFS):** Configured EFS mounts on EC2 instances to provide scalable and shared storage<br style="line-height:1" />
+- **Elastic File System (EFS):** Configured EFS mounts on EC2 instances to provide scalable and shared storage.
+
    <u>**Why didn't we use S3?**</u>
+
   1. **Instant access vs. minutes or hours**
    Files in EFS work like those on a regular computer and can be accessed within milliseconds. In contrast, archived objects in S3, especially in Glacier tiers, can take minutes to hours to be available.
   2. **Easy file sharing across EC2 instances**
@@ -36,7 +42,8 @@ This project involved migrating a legacy content management system to a modern, 
 
 ## Performance Optimization: Addressing System Slowness
 
-- **NGINX Caching:** Implemented server-side caching of static assets to reduce load times and backend processing. (Note: Proof of concept with CloudFront did not meet expectations.)<br style="line-height:1" />
+- **NGINX Caching:** Implemented server-side caching of static assets to reduce load times and backend processing. (Note: Proof of concept with CloudFront did not meet expectations.)
+
   **Why CloudFront wasn't suitable for our caching requirements:**
 
   We needed to optimize thumbnail generation, which involves computationally intensive image processing. Our architecture decision to store thumbnails in EFS (Elastic File System) instead of S3 created a dependency where all media access must route through our backend servers.
